@@ -455,13 +455,13 @@ void update() override {
             vista.write('*'); //send a * cmd every 30 seconds to cause panel to send fault status  when not armed
          
     }
-  
+  /*
     //if data to be sent, we ensure we process it quickly to avoid delays with the F6 cmd
     while(!firstRun && vista.keybusConnected &&  vista.sendPending()) {
         vista.handle();
         yield(); 
     }
-      
+     */ 
  	if (vista.keybusConnected  && vista.handle()  )  { 
 
         if (firstRun)  setExpStates(); //restore expander states from persistent storage        
@@ -539,10 +539,12 @@ void update() override {
             memcpy(p2,&vista.statusFlags.prompt[16],16);
             p1[16]='\0';
             p2[16]='\0';
+            /*
             if (lastp1 != p1)
                 line1DisplayCallback(p1);
             if (lastp2 != p2)
                 line2DisplayCallback(p2);
+            */
             ESP_LOGI("INFO","Prompt: %s",p1);
             ESP_LOGI("INFO","Prompt: %s",p2);
             ESP_LOGI("INFO","Beeps: %d\n",vista.statusFlags.beeps); 
