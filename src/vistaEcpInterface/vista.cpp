@@ -38,8 +38,10 @@ Vista::~Vista() {
     free(vistaSerial);
     detachInterrupt(rxPin);
 #ifdef MONITORTX
-    free(vistaSerialMonitor);
-    detachInterrupt(monitorPin);
+    if (vistaSerialMonitor->isValidGPIOpin(monitorPin)) {
+        free(vistaSerialMonitor);
+        detachInterrupt(monitorPin);
+    }
 #endif
     pointerToVistaClass = NULL;
 }
@@ -907,8 +909,8 @@ bool Vista::decodePacket() {
     } else if (extcmd[0] != 0 && extcmd[0] != 0xf6) {
         extcmd[1] = 0; //no device
     }
-
-    for (uint8_t i = 0; i <= extidx; i++) {
+    
+    for (uint8_t i = 0; i <= extidx - 3; i++) {
         extcmd[3 + i] = extbuf[i]; //populate  buffer 0=cmd, 1=device, rest is tx data
     }
 
@@ -921,6 +923,10 @@ bool Vista::decodePacket() {
 bool Vista::getExtBytes() {
     uint8_t x;
     bool ret = 0;
+
+    if (!vistaSerialMonitor->isValidGPIOpin(monitorPin)) {
+        return 0;
+    }
 
     while (vistaSerialMonitor->available()) {
         x = vistaSerialMonitor->read();
@@ -1123,8 +1129,10 @@ void Vista::hw_wdt_enable() {
 void Vista::stop() {
     //hw_wdt_enable(); //debugging only
     detachInterrupt(rxPin);
-#ifdef MONITORTX
-    detachInterrupt(monitorPin);
+#ifdef MONITORTX  
+    if (vistaSerialMonitor->isValidGPIOpin(monitorPin)) {
+        detachInterrupt(monitorPin);
+    }
 #endif
     keybusConnected = false;
 }
