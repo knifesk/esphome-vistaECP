@@ -622,12 +622,12 @@ private:
 
                     1 - ? (loop flag?)
                     2 - Low battery
-                    3 -	Supervision required
+                    3 - Supervision required
                     4 - ?
-                    5 -	Loop 3
-                    6 -	Loop 2
-                    7 -	Loop 4
-                    8 -	Loop 1
+                    5 - Loop 3
+                    6 - Loop 2
+                    7 - Loop 4
+                    8 - Loop 1
 
                 */
             }
@@ -838,7 +838,7 @@ private:
 
             //if ( vista.statusFlags.cancel ) {
             //   currentLightState.canceled=true;
-            //	}    else  currentLightState.canceled=false;
+            //  }    else  currentLightState.canceled=false;
 
             //clear alarm statuses  when timer expires
             if ((millis() - fireStatus.time) > TTL) fireStatus.state = false;
@@ -926,7 +926,7 @@ private:
 
             /*
             if (currentLightState.canceled != previousLightState.canceled){
-               statusChangeCallback(scanceled,currentLightState.canceled);
+                statusChangeCallback(scanceled,currentLightState.canceled);
             }
             */
 
@@ -1658,4 +1658,3 @@ private:
         }
     }
 };
-
